@@ -10,7 +10,7 @@ def clear_nonutf_csv_file(filename, tmp_file="clear_file.tmp"):
                 ch = masterfile.read(100)
                 if not ch:
                     break
-                line = ch.decode('utf-8', 'ignore')
+                line = ch.decode("utf-8", "ignore")
                 tmpfile.write(line)
 
 
@@ -26,36 +26,38 @@ def list_files(path):
 def extract_from_csv(filename):
     tmp_f = "clear_file.tmp"
     clear_nonutf_csv_file(filename, tmp_f)
-    with open(tmp_f, newline='', encoding='utf-8') as csvfile:
-        lines = csv.reader(csvfile, delimiter=',', quotechar='"')
+    with open(tmp_f, newline="", encoding="utf-8") as csvfile:
+        lines = csv.reader(csvfile, delimiter=",", quotechar='"')
         for row in lines:
             yield (
-                {'from_phone': row[1],
-                 'to_phone': row[2],
-                 'context': row[3],
-                 'in_channel': row[5],
-                 'out_channel': row[6],
-                 'lastapp': f"{row[7].upper()}({row[8]})",
-                 'start_ring': row[9],
-                 'answer_ring': row[10] if row[10] else None,
-                 'end_ring': row[11],
-                 'duration_channel': row[12],
-                 'speach_duration': row[13],
-                 'status': row[14],
-                 'amaflag': row[15],
-                 'uniqueid': row[16]
-                 })
+                {
+                    "from_phone": row[1],
+                    "to_phone": row[2],
+                    "context": row[3],
+                    "in_channel": row[5],
+                    "out_channel": row[6],
+                    "lastapp": f"{row[7].upper()}({row[8]})",
+                    "start_ring": row[9],
+                    "answer_ring": row[10] if row[10] else None,
+                    "end_ring": row[11],
+                    "duration_channel": row[12],
+                    "speach_duration": row[13],
+                    "status": row[14],
+                    "amaflag": row[15],
+                    "uniqueid": row[16],
+                }
+            )
     os.remove(tmp_f)
 
 
-file_names = list_files('./monitor')
-for item in extract_from_csv('Master.csv'):
+file_names = list_files("./monitor")
+for item in extract_from_csv("Master.csv"):
     for name in file_names:
-        if name.find(item.get('uniqueid')) != -1:
+        if name.find(item.get("uniqueid")) != -1:
             print(item)
             print(name)
 
-'''
+"""
 ['', '89245555937', '211474', 'stadion-pstn', '"89245555937" <89245555937>', 'SIP/211474-00000001', '', 'Hangup', '', '2024-01-27 15:27:58', '2024-01-27 15:27:58', '2024-01-27 15:28:25', '27', '27', 'ANSWERED', 'DOCUMENTATION', '1706369278.2', '', '', '1706369278.2', '1']
 
 ['', '89245555937', 'ch2', 'TimeDelay', '"89245555937" <89245555937>', 'Local/ch2@TimeDelay-00000001;2', 'SIP/stadionpbx-00000008', 'Dial', 'SIP/154@stadionpbx,30', '2024-01-27 16:16:36', '', '2024-01-27 16:17:16', '40', '0', 'NO ANSWER', 'DOCUMENTATION', '1706372196.16', '', '', '1706372196.12', '12'] - 21
@@ -73,4 +75,4 @@ for item in extract_from_csv('Master.csv'):
 
 
 3) 
-'''
+"""

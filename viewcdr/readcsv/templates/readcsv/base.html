@@ -1,0 +1,47 @@
+{% load tz %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing CDR</title>
+    <style>
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        figure {
+            display:flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>
+            <div>Откуда</div>
+            <div>Время</div>
+            <div>Длительность</div>
+            <div>Lissen</div>
+        </li>
+    {% for item in cdrs %}
+    <li>
+        <div>{{item.from_phone}}</div>
+        <div>{{item.start_ring|localtime}}</div>
+        <div>{{item.duration_speech}}</div>
+        {% if item.file_audio %}
+        <figure>
+            <figcaption>Listen</figcaption>
+            <audio controls src="{{item.file_audio.url}}"></audio>
+            <a href="{{item.file_audio.url}}"> Скачать</a>
+        </figure>
+        {% else %}
+        <div> - </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

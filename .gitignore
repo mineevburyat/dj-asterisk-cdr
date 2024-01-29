@@ -8,3 +8,5 @@ media
 .env
 .vscode/*
 *.tmp
+monitor
+Master.csv

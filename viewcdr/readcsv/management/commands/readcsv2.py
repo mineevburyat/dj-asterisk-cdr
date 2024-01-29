@@ -74,7 +74,7 @@ class Command(BaseCommand):
                     break
             if path_to_audio:
                 f = open(path_to_audio, 'rb')
-                path = default_storage.save(f'media/{name}', File(f))
+                path = default_storage.save(f'audio/{name}', File(f))
             else:
                 path = None
             try:
